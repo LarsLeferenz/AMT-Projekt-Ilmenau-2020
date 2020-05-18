@@ -175,7 +175,7 @@ void loop() {
                 index++;
             } else{
                 index = 0;     //von vorne beginnen, durch while(true) ersetzen für abbruch
-                Serial.println("Strecke abgefahren!")
+                Serial.println("Strecke abgefahren!");
             }
         
         }
@@ -186,8 +186,8 @@ void loop() {
     
     
     if(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0)   {         //Beim Abkommen an einer geraden
-        delay(500)
-        Serial.println("Von Streck abgekommen, setze zurück...")
+        delay(500);
+        Serial.println("Von Streck abgekommen, setze zurück...");
         while(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0){                                                             
             digitalWrite(linksvor,LOW);
             digitalWrite(rechtsvor,LOW);
