@@ -14,50 +14,60 @@ void setup() {
     for (byte i = 0; i< numberIntersections; i++){      //Eventuell nicht notwedig, kann halt sein das sonst unten eine Nullpointer Exeption bei den if vergleichen kommt
         oldLED[i] = 0;
     }
-    for (byte i = 0; i< NUM_LEDS; i++){      
+    for (byte i = 0; i< NUM_LEDS; i++){                 //Fülle Array für Anfang mit Nullen
         lastGreen[i] = 0;
     }
 }
 
 
 void loop() {
-    for(byte i = 0; i< numberIntersections; i++){
-        for (byte k = i; k <4*i+4){
-            if(lastGreen[k]>=6 && !tooLongRed){
+    for(byte i = 0; i< numberIntersections; i++){       //Iteriere durch Kreuzungen
+        
+        for (byte k = i; k <4*i+4){                     //Überprüfe jede Ampel ob sie 6x hintereinander rot war
+            if(lastGreen[k]>=6 && !tooLongRed){     
                 activeLED[i] = k-4*i;
-                tooLongRed = true;
+                tooLongRed = true;                      //Stoppe for schleife
             }
         }
-        if (!tooLongRed){
-            activeLED[i] = random(4);
-        }
-    
-        if (oldLED[i] != activeLED[i]) {
-            for(byte j = i; j < 4*i+4; j++){
-                if(j == oldLED[i]+4*i || j == activeLED[i]+4*i){
-                    leds[j] = CRGB::Yellow;
-                    lastGreen[j] = 0;
-                }
-                else{
-                    leds[j] = CRGB::Red;
-                    lastGreen[j]++;
-                }
+
+        if (!tooLongRed){                               //Wenn nicht zu lange Rot, würfeln
+            while (oldLED[i] != activeLED[i]){          //würfel bis neue Ampel (Nicht 2x hintereinander grün)
+                activeLED[i] = random(4);
             }
-                
         }
+        
+        for(byte j = i; j < 4*i+4; j++){
+            
+            if(j == oldLED[i]+4*i || j == activeLED[i]+4*i){    //Setze alte und neue Ampel auf Gelb, Rest auf Rot
+                leds[j] = CRGB::Yellow;                  
+                                  
+
+            }
+            else{
+                leds[j] = CRGB::Red;                
+            }
+        }       
     }
+
     FastLED.show();
     delay(1500);
-    for(byte i = 0; i< numberIntersections; i++){ {
-        for(byte j = i; j < 4*i+4; j++){
+
+    for(byte i = 0; i< numberIntersections; i++){ {                 //Iteriere durch Kreuzungen
+
+        for(byte j = i; j < 4*i+4; j++){                            //Setze neue auf Grün und verändere lastGreen[]
+            
             if(j == activeLED[i]+4*i){
                 leds[j] = CRGB::Green;
+                lastGreen[j] = 0; 
             } else{
                 leds[j] = CRGB::Red;
+                lastGreen[j]++;
             }
         }
-    }    
+    }
+
     FastLED.show();
-    oldLED[] = activeLED[];
+    std::array<byte,numberIntersections> oldLED = activeLED;    //Array in neues Klonen, ~> ohne nur den Pointer zu kopieren, sonst würden alle immer Rot bleiben. Funktioniert evtl so nicht
+    tooLongRed = false;
     delay(10000);
 }
