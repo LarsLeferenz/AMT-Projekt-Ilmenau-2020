@@ -1,5 +1,0 @@
-{
-    "board": "arduino:avr:uno",
-    "sketch": "arduino-fahrsteuerung\\simulator-fahrsteuerung.ino",
-    "port": "COM4"
-}
