@@ -1,9 +1,9 @@
 #include <FastLED.h>
-#define NUM_LEDS 8 //Anzahl LED
-#define DATA_PIN 6 //Signal Pin
+#define DATA_PIN 6
+#define numberIntersections 2 //Anzahl Kreuzungen 
+#define NUM_LEDS 4*numberIntersections //Anzahl LED
 CRGB leds[NUM_LEDS]; //Speicherblock(Array) zum speichern/aendern der LED Daten. MUSS VIELFACHES VON 4 SEIN (4 Ampeln pro Kreuzung)
 byte lastGreen[NUM_LEDS];
-byte numberIntersections = sizeof(leds)/4; //sizeof() eventuell nicht mit liste oben kompatible, muss man sonst manuell machen
 byte activeLED[numberIntersections];
 byte oldLED[numberIntersections];
 boolean tooLongRed = false;
