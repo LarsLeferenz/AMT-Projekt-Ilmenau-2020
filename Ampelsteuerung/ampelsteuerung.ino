@@ -1,4 +1,5 @@
 #include <FastLED.h>
+
 #define DATA_PIN 6
 #define numberIntersections 2 //Anzahl Kreuzungen 
 #define NUM_LEDS 4*numberIntersections //Anzahl LED
@@ -7,6 +8,7 @@ byte lastGreen[NUM_LEDS];
 byte activeLED[numberIntersections];
 byte oldLED[numberIntersections];
 boolean tooLongRed = false;
+
 
 
 void setup() {
@@ -23,7 +25,7 @@ void setup() {
 void loop() {
     for(byte i = 0; i< numberIntersections; i++){       //Iteriere durch Kreuzungen
         
-        for (byte k = i; k <4*i+4){                     //Überprüfe jede Ampel ob sie 6x hintereinander rot war
+        for (byte k = i; k <4*i+4;i++){                     //Überprüfe jede Ampel ob sie 6x hintereinander rot war
             if(lastGreen[k]>=6 && !tooLongRed){     
                 activeLED[i] = k-4*i;
                 tooLongRed = true;                      //Stoppe for schleife
@@ -52,7 +54,7 @@ void loop() {
     FastLED.show();
     delay(1500);
 
-    for(byte i = 0; i< numberIntersections; i++){ {                 //Iteriere durch Kreuzungen
+    for(byte i = 0; i< numberIntersections; i++){                 //Iteriere durch Kreuzungen
 
         for(byte j = i; j < 4*i+4; j++){                            //Setze neue auf Grün und verändere lastGreen[]
             
@@ -67,7 +69,10 @@ void loop() {
     }
 
     FastLED.show();
-    std::array<byte,numberIntersections> oldLED = activeLED;    //Array in neues Klonen, ~> ohne nur den Pointer zu kopieren, sonst würden alle immer Rot bleiben. Funktioniert evtl so nicht
+    for(byte i=0; i<numberIntersections;i++){
+        oldLED[i] = activeLED[i];
+    }
     tooLongRed = false;
     delay(10000);
+
 }
