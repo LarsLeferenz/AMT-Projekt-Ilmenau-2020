@@ -80,5 +80,5 @@ void loop()
         oldLED[i] = activeLED[i];
     }
     tooLongRed = false;
-    delay(10000);
+    delay(5000);
 }
