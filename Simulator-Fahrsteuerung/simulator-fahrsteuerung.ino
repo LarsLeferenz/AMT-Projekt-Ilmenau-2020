@@ -1,5 +1,33 @@
+#include <bitswap.h>
+#include <chipsets.h>
+#include <color.h>
+#include <colorpalettes.h>
+#include <colorutils.h>
+#include <controller.h>
+#include <cpp_compat.h>
+#include <dmx.h>
+#include <fastled_config.h>
+#include <fastled_delay.h>
+#include <fastled_progmem.h>
+#include <FastLED.h>
+#include <fastpin.h>
+#include <fastspi_bitbang.h>
+#include <fastspi_dma.h>
+#include <fastspi_nop.h>
+#include <fastspi_ref.h>
+#include <fastspi_types.h>
+#include <fastspi.h>
+#include <hsv2rgb.h>
+#include <led_sysdefs.h>
+#include <lib8tion.h>
+#include <noise.h>
+#include <pixelset.h>
+#include <pixeltypes.h>
+#include <platforms.h>
+#include <power_mgt.h>
+
 //*********************************************************
-//AMT Zielführendes-fahren
+//AMT Zielfuhrendes-fahren
 //Autoren: Lars Leferenz, Tobias Scholz, Sebastian Adler
 //Stand: 07.05.2020 12:51
 //*********************************************************
@@ -8,8 +36,8 @@
 
 int linksvor = 9;                           //AMT Konfiguration
 int rechtsvor = 7;
-int linksrück= 8;
-int rechtsrück = 6;
+int linksruck= 8;
+int rechtsruck = 6;
                                                
 int ML = 3;
 int MR = 2;
@@ -30,8 +58,8 @@ int index = 0;
 void setup() {
     pinMode(linksvor,OUTPUT);
     pinMode(rechtsvor,OUTPUT);
-    pinMode(linksrück,OUTPUT);
-    pinMode(rechtsrück,OUTPUT);
+    pinMode(linksruck,OUTPUT);
+    pinMode(rechtsruck,OUTPUT);
 
     pinMode(ML,INPUT);
     pinMode(MR,INPUT);
@@ -51,15 +79,15 @@ void sensoren(){                    //Updated Senson VAriablen
 void reset(){                       //Setzt AMT auf Vorwärts
     digitalWrite(linksvor,HIGH);
     digitalWrite(rechtsvor,HIGH);
-    digitalWrite(linksrück,LOW);
-    digitalWrite(rechtsrück,LOW);
+    digitalWrite(linksruck,LOW);
+    digitalWrite(rechtsruck,LOW);
     sensoren();
 }
 void scharfrechts(){                //Bei Abkommen von Strecke links
     digitalWrite(linksvor,HIGH);
     digitalWrite(rechtsvor,LOW);
-    digitalWrite(linksrück,LOW);
-    digitalWrite(rechtsrück,HIGH);
+    digitalWrite(linksruck,LOW);
+    digitalWrite(rechtsruck,HIGH);
     while(MLWert == 0 && MRWert == 0){
         sensoren();
     }
@@ -68,8 +96,8 @@ void scharfrechts(){                //Bei Abkommen von Strecke links
 void scharflinks(){                 //Bei Abkommen von Strecke rechts
     digitalWrite(linksvor,LOW);
     digitalWrite(rechtsvor,HIGH);
-    digitalWrite(linksrück,HIGH);
-    digitalWrite(rechtsrück,LOW);
+    digitalWrite(linksruck,HIGH);
+    digitalWrite(rechtsruck,LOW);
     while(MLWert == 0 && MRWert == 0){
         sensoren();
     }
@@ -111,7 +139,7 @@ void loop() {
     while (MLWert == 0 && MRWert == 1)            //RECHTS Korrektur/Kurve fahren
     {
         digitalWrite(rechtsvor,LOW);
-        digitalWrite(rechtsrück,HIGH);
+        digitalWrite(rechtsruck,HIGH);
         sensoren();
         scharfrechts();    
     }
@@ -121,7 +149,7 @@ void loop() {
     while (MLWert == 1 && MRWert == 0)            //LINKS Korrektur/Kurve fahren
     {                           
         digitalWrite(linksvor,LOW);
-        digitalWrite(linksrück,HIGH);
+        digitalWrite(linksruck,HIGH);
         sensoren();   
         scharflinks();         
     }
@@ -174,7 +202,7 @@ void loop() {
                 Serial.println(index+1);
                 index++;
             } else{
-                index = 0;     //von vorne beginnen, durch while(true) ersetzen für abbruch
+                index = 0;     //von vorne beginnen, durch while(true) ersetzen fur abbruch
                 Serial.println("Strecke abgefahren!");
             }
         
@@ -187,12 +215,12 @@ void loop() {
     
     if(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0)   {         //Beim Abkommen an einer geraden
         delay(500);
-        Serial.println("Von Streck abgekommen, setze zurück...");
+        Serial.println("Von Streck abgekommen, setze zuruck...");
         while(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0){                                                             
             digitalWrite(linksvor,LOW);
             digitalWrite(rechtsvor,LOW);
-            digitalWrite(linksrück,HIGH);
-            digitalWrite(rechtsrück,HIGH);
+            digitalWrite(linksruck,HIGH);
+            digitalWrite(rechtsruck,HIGH);
             sensoren();
         }
     }
