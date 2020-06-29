@@ -15,7 +15,7 @@
 #define BRIGHTNESS 255 //Helligkeit
 const byte numberIntersections = 1; // Anzahl der Kreuzungen
 const int gelbPhase = 2000; //Dauer der Gelb-Phase in ms
-const int gruenPhase = 5000; //Dauer der Rot-Phase in ms
+const int gruenPhase = 5000; //Dauer der Grün-Phase in ms
 const byte maxRotDauer = 6; //Maximale Anzahl die eine Kreuzung hintereinander Rot sein darf.
 //--------------------------------------------------------------------------------------------
 
