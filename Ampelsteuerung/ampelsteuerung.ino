@@ -1,7 +1,7 @@
 
 
 //*********************************************************
-//AMT Ampelsteuerung
+//AMT Ampelsteuerung                                        
 //Autoren: Lars Leferenz, Tobias Scholz, Sebastian Adler
 //Stand: 29.06.2020 18:21
 //*********************************************************
@@ -10,14 +10,14 @@
 #include "FastLED.h" //getestet für v3.3
 
 
-//Einstellungen:------------------------------------------------------------------------------
+//Einstellungen:------------------------------------------------------------------------------------------
 #define DATA_PIN 0  //Pin für Steuerkabel 
 #define BRIGHTNESS 255 //Helligkeit
 const byte numberIntersections = 1; // Anzahl der Kreuzungen
 const int gelbPhase = 2000; //Dauer der Gelb-Phase in ms
 const int gruenPhase = 5000; //Dauer der Grün-Phase in ms
-const byte maxRotDauer = 6; //Maximale Anzahl die eine Kreuzung hintereinander Rot sein darf.
-//--------------------------------------------------------------------------------------------
+const byte maxRotDauer = 6; //Maximale Anzahl die eine Kreuzung hintereinander Rot sein darf. Größer als 4 pls.
+//--------------------------------------------------------------------------------------------------------
 
 
 //Nicht verändern
@@ -43,7 +43,7 @@ void loop() {
     Serial.println(i);
     for (byte k = 4 * i; k < 4 * i + 4; k++){ //Überprüfe jede Ampel ob sie 6x hintereinander rot war
     
-      if (lastGreen[k] >= 6 && !tooLongRed) {
+      if (lastGreen[k] >= maxRotDauer && !tooLongRed) {
        
         activeLED[i] = k - 4 * i;
         tooLongRed = true;
