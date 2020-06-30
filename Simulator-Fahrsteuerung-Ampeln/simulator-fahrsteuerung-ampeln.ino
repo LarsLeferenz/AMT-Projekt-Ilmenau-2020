@@ -1,20 +1,32 @@
 //*********************************************************
-//AMT Zielführendes-fahren
+//AMT Fahren mit Ampeln
 //Autoren: Lars Leferenz, Tobias Scholz, Sebastian Adler
-//Stand: 07.05.2020 12:51
+//Stand: 30.06.2020 17:09
 //*********************************************************
 
 
 
-int linksvor = 9;                           //AMT Konfiguration
-int rechtsvor = 7;
-int linksrück= 8;
-int rechtsrück = 6;
+byte linksvor = 9;                           //AMT Konfiguration
+byte rechtsvor = 7;
+byte linksrück= 8;
+byte rechtsrück = 6;
                                                
-int ML = 3;
-int MR = 2;
-int AL = 4;
-int AR = 5;
+byte ML = 3;
+byte MR = 2;
+byte AL = 4;
+byte AR = 5;
+
+//Farbsensor
+byte s0;
+byte s1;
+byte s2;
+byte s3;
+byte sensorOut;
+
+int rot;
+int gruen;
+int blau;
+//
 
 int MLWert ;
 int MRWert ;
@@ -33,6 +45,15 @@ void setup() {
     pinMode(linksrück,OUTPUT);
     pinMode(rechtsrück,OUTPUT);
 
+    pinMode(s0, OUTPUT);
+    pinMode(s1, OUTPUT);
+    pinMode(s2, OUTPUT);
+    pinMode(s3, OUTPUT);
+    pinMode(sensorOut, INPUT);
+
+    digitalWrite(s0,HIGH);
+    digitalWrite(s1,LOW);
+
     pinMode(ML,INPUT);
     pinMode(MR,INPUT);
     pinMode(AL,INPUT);
@@ -46,8 +67,12 @@ void sensoren(){                    //Updated Senson VAriablen
     MRWert = digitalRead(MR);
     ALWert = digitalRead(AL);
     ARWert = digitalRead(AR);
-}
 
+    digitalWrite(s2,LOW);           //Rote Farbe messen
+    digitalWrite(s3,LOW);
+    rot = pulseIn(sensorOut, LOW);
+
+}
 void reset(){                       //Setzt AMT auf Vorwärts
     digitalWrite(linksvor,HIGH);
     digitalWrite(rechtsvor,HIGH);
@@ -126,7 +151,16 @@ void loop() {
         scharflinks();         
     }
 
-    reset();                              
+    reset();                
+
+    while (rot>50)            //Rote Ampel Warten
+    {
+        digitalWrite(rechtsvor,LOW);
+        digitalWrite(linksvor,LOW);
+        sensoren();  
+    }
+
+    reset();              
     
     if ((ALWert == 1 || ARWert == 1) && MLWert == 1 && MRWert == 1){  //KREUZUNG
 

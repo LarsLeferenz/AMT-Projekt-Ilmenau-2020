@@ -1,5 +1,4 @@
 
-
 //*********************************************************
 //AMT Ampelsteuerung                                        
 //Autoren: Lars Leferenz, Tobias Scholz, Sebastian Adler
@@ -11,7 +10,7 @@
 
 
 //Einstellungen:------------------------------------------------------------------------------------------
-#define DATA_PIN 0  //Pin für Steuerkabel 
+#define DATA_PIN 2  //Pin für Steuerkabel !!Serial benutzt PINS 0 und 1 -> Nicht auf 0/1 setzen + Serial nutzen
 #define BRIGHTNESS 255 //Helligkeit
 const byte numberIntersections = 1; // Anzahl der Kreuzungen
 const int gelbPhase = 2000; //Dauer der Gelb-Phase in ms
@@ -20,18 +19,21 @@ const byte maxRotDauer = 6; //Maximale Anzahl die eine Kreuzung hintereinander R
 //--------------------------------------------------------------------------------------------------------
 
 
-//Nicht verändern
+//Nicht verändern-----------------------------------------------------------------------------------------
 const byte NUM_LEDS = 4 * numberIntersections; //Anzahl LED
 CRGB leds[NUM_LEDS]; //Speicherblock(Array) zum speichern/aendern der LED Daten. MUSS VIELFACHES VON 4 SEIN (4 Ampeln pro Kreuzung)
 byte lastGreen[NUM_LEDS];
 byte activeLED[numberIntersections];
 byte oldLED[numberIntersections];
 boolean tooLongRed = false;
+//--------------------------------------------------------------------------------------------------------
 
 
 void setup() {
-  FastLED.addLeds < NEOPIXEL, DATA_PIN > (leds, NUM_LEDS); //LED Typ (WS2812B), Signalpin, Speicherarray, Anzahl LED
+
   Serial.begin(9600);
+  FastLED.addLeds < NEOPIXEL, DATA_PIN > (leds, NUM_LEDS); //LED Typ (WS2812B), Signalpin, Speicherarray, Anzahl LED
+
 }
 
 
@@ -41,6 +43,7 @@ void loop() {
   
     Serial.print("Kreuzung:");
     Serial.println(i);
+    
     for (byte k = 4 * i; k < 4 * i + 4; k++){ //Überprüfe jede Ampel ob sie 6x hintereinander rot war
     
       if (lastGreen[k] >= maxRotDauer && !tooLongRed) {
