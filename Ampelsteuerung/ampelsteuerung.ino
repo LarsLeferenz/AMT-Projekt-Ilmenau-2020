@@ -22,10 +22,10 @@ const byte maxRotDauer = 6; //Maximale Anzahl die eine Kreuzung hintereinander R
 //Nicht verändern-----------------------------------------------------------------------------------------
 const byte NUM_LEDS = 4 * numberIntersections; //Anzahl LED
 CRGB leds[NUM_LEDS]; //Speicherblock(Array) zum speichern/aendern der LED Daten. MUSS VIELFACHES VON 4 SEIN (4 Ampeln pro Kreuzung)
-byte lastGreen[NUM_LEDS];
-byte activeLED[numberIntersections];
-byte oldLED[numberIntersections];
-boolean tooLongRed = false;
+byte lastGreen[NUM_LEDS]; //Speichert wie lange diese LED schon Rot ist
+byte activeLED[numberIntersections];  //Speichert für jede Kreuzung die nächste Grüne LED
+byte oldLED[numberIntersections]; //Speichert die letzte Grüne LED, damit die selbe LED nicht 2x hintereinander Grün wird
+boolean tooLongRed = false; // wird genutzt um das "würfeln" abzustellen
 //--------------------------------------------------------------------------------------------------------
 
 
@@ -44,11 +44,11 @@ void loop() {
     Serial.print("Kreuzung:");
     Serial.println(i);
     
-    for (byte k = 4 * i; k < 4 * i + 4; k++){ //Überprüfe jede Ampel ob sie 6x hintereinander rot war
+    for (byte k = 4 * i; k < 4 * i + 4; k++){ //Überprüfe jede Ampel ob sie x-mal hintereinander rot war
     
-      if (lastGreen[k] >= maxRotDauer && !tooLongRed) {
+      if (lastGreen[k] >= maxRotDauer && !tooLongRed) { //Zu lange Rot und nicht bereits andere genutzt? ~> Könnte break() nutzen, so weniger Zeilen
        
-        activeLED[i] = k - 4 * i;
+        activeLED[i] = k - 4 * i;     //Nächste Grüne wird die zu lange Rote LED
         tooLongRed = true;
         Serial.print("Too Long Red:");
         Serial.println(k); 
@@ -58,7 +58,7 @@ void loop() {
     
       while (oldLED[i] == activeLED[i]){ //würfel bis neue Ampel (Nicht 2x hintereinander grün)
       
-        activeLED[i] = random(4);
+        activeLED[i] = random(4); //Zufällige LED zwischen 0 und 3
         Serial.print("Neue Active:");
         Serial.println(activeLED[i]);
 
@@ -93,20 +93,20 @@ void loop() {
       if (j == activeLED[i] + 4 * i) {
         
         leds[j] = CRGB::Green;
-        lastGreen[j] = 0;
+        lastGreen[j] = 0; //0 Phasen seit Grün
 
       } else {
         
         leds[j] = CRGB::Red;
-        lastGreen[j]++;
+        lastGreen[j]++; //Inkrementiere wann diese Ampel zuletzt Grün war
       }
     }
   }
   for (byte i = 0; i < numberIntersections; i++) {
-    oldLED[i] = activeLED[i];
+    oldLED[i] = activeLED[i]; //Kopiere activeLED Array in oldLED Array, gibt es vl eine Methode in c++? 
   }
   
-  tooLongRed = false;
+  tooLongRed = false; //reset tooLongRed
   FastLED.show();
   delay(gruenPhase);
 }

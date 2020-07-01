@@ -186,7 +186,7 @@ void loop() {
     reset();
     
     
-    if(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0)   {         //Beim Abkommen an einer geraden
+    if(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0)   {         //Beim abkommen an einer geraden
         delay(500);
         Serial.println("Von Streck abgekommen, setze zuruck...");
         while(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0){                                                             
