@@ -57,24 +57,30 @@ void reset(){                       //Setzt AMT auf Vorwärts
     sensoren();
 }
 void scharfrechts(){                //Bei Abkommen von Strecke links
-    digitalWrite(linksvor,HIGH);
-    digitalWrite(rechtsvor,LOW);
-    digitalWrite(linksruck,LOW);
-    digitalWrite(rechtsruck,HIGH);
-    while(MLWert == 0 && MRWert == 0){
-        sensoren();
-    }
+    if(MLWert == 0 && MRWert == 0 && ARWert==1){
+        Serial.println("scharfrechts...");
+        digitalWrite(linksvor,HIGH);
+        digitalWrite(rechtsvor,LOW);
+        digitalWrite(linksruck,LOW);
+        digitalWrite(rechtsruck,HIGH);
+        while(MLWert == 0 && MRWert == 0){
+            sensoren();
+        }
     reset();
+    }
 }
 void scharflinks(){                 //Bei Abkommen von Strecke rechts
-    digitalWrite(linksvor,LOW);
-    digitalWrite(rechtsvor,HIGH);
-    digitalWrite(linksruck,HIGH);
-    digitalWrite(rechtsruck,LOW);
-    while(MLWert == 0 && MRWert == 0){
-        sensoren();
+    if(MLWert == 0 && MRWert == 0 && ALWert==1){
+        Serial.println("scharflinks...");
+        digitalWrite(linksvor,LOW);
+        digitalWrite(rechtsvor,HIGH);
+        digitalWrite(linksruck,HIGH);
+        digitalWrite(rechtsruck,LOW);
+        while(MLWert == 0 && MRWert == 0){
+            sensoren();
+        }
+        reset();
     }
-    reset();
 }
 
 void kreuzungKorrektur(){                           //Richtet AMT vor Kreuzung gerade aus
@@ -131,7 +137,6 @@ void loop() {
     
     if ((ALWert == 1 || ARWert == 1) && MLWert == 1 && MRWert == 1){  //KREUZUNG
 
-        delay(100);
         sensoren();
 
         if (((ALWert == 1 || ARWert == 1) && MLWert == 1 && MRWert == 1)){  
