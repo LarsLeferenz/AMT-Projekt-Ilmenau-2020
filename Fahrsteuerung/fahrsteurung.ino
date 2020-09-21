@@ -8,36 +8,39 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,20,4);
 
-int linksvor = 9;                           //AMT Konfiguration
-int rechtsvor = 7;
-int linksruck= 8;
-int rechtsruck = 6;
+byte linksvor = 9;                           //AMT Konfiguration
+byte rechtsvor = 7;
+byte linksruck= 8;
+byte rechtsruck = 6;
                                                
-int ML = 3;
-int MR = 2;
-int AL = 4;
-int AR = 5;
+byte ML = 3;
+byte MR = 2;
+byte AL = 4;
+byte AR = 5;
 
-int MLWert ;
-int MRWert ;
-int ALWert ;
-int ARWert ;
+byte MLWert ;
+byte MRWert ;
+byte ALWert ;
+byte ARWert ;
 
-int knopfrechts;
-int knopflinks;
+byte knopfrechts;
+byte knopflinks;
 
-int start;
+byte start;
 char startChar;
-int ziel;
+byte ziel;
 char zielChar;
 String orte[] = {"Kreuzung-A","Kreuzung-B","Kreuzung-C","Kreuzung-D","Kreuzung-E","Kreuzung-F","Kreuzung-G","Kreuzung-H",
                 "Kreuzung-I","Kreuzung-J","Kreuzung-K","Kreuzung-L","Kreuzung-M","Kreuzung-N","Kreuzung-O","Kreuzung-P",
                 "Kreuzung-Q","Kreuzung-R","Kreuzung-S"};
+String directions[] = {"Von unten","Von links","Von Oben","Von rechts"};
 char orteChar[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s'};
-int ortelength = 19;
-int weg[10];      //Streckenplan, 0 = Geradeaus ; 1 = Links ; 2 = Rechts
-int size = 10;                              //Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
-int index = 0;
+byte ortelength = 19;
+byte weg[10];      //Streckenplan, 0 = Geradeaus ; 1 = Links ; 2 = Rechts
+byte size = 10;                              //Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
+byte index = 0;
+
+byte direction = 1;       //1 nach oben, 2 nach rechts, ....  
 
 byte cross = 18;
               //Die Map: Jede Kreuzung eine Spalte; nullte Zeile Name der Kreuzung; erste bis vierte Zeile Name der Nachbar Kreuzung, Reihenfolge oben, rechts, unten, links; fünfte Zeile Distanz zum Ziel
@@ -60,8 +63,7 @@ void setup() {
     getDestUI();
     startChar = orteChar[start];
     zielChar = orteChar[ziel];
-
-    fill();
+    fill2(ziel);
     rout();
 }
 
@@ -77,7 +79,7 @@ void getDestUI(){                       //"UI" zum eingeben des Start/Ziel
     lcd.setCursor(0,3);
     lcd.print("Bestätige...");
     while(knopfrechts== 0){
-        knopfrechts = //PINXY;
+        //knopfrechts = //PINXY;
     }
     lcd.clear();
     lcd.setCursor(0,0);
@@ -89,16 +91,22 @@ void getDestUI(){                       //"UI" zum eingeben des Start/Ziel
     ziel = getOrt(0);
     lcd.clear();
     lcd.setCursor(0,0);
+    lcd.print("Aus welcher ");
+    lcd.setCursor(0,1);
+    lcd.print("Richtung kommst du?");
+    direction = getDirection(0);
+    lcd.clear();
+    lcd.setCursor(0,0);
     lcd.print("Abbruch/Bestaetige:");
     lcd.setCursor(0,1);
     lcd.print(orte[start]);
     lcd.setCursor(0,2);
-    lcd.print("--->");
+    lcd.print(directions[direction-1]+" --->");
     lcd.setCursor(0,3);
     lcd.print(orte[ziel]);
     while(knopflinks == 0 && knopfrechts== 0){
-        knopfrechts = //PINXY;
-        knopflinks = //PINXY;
+        //knopfrechts = //PINXY;
+        //knopflinks = //PINXY;
     }
     if(knopflinks){
         getDestUI();
@@ -107,14 +115,14 @@ void getDestUI(){                       //"UI" zum eingeben des Start/Ziel
     }
 }
 
-int getOrt(int lowestOrt){                      //Rekusive Funktion zur Auswahl des Ortes
+byte getOrt(byte lowestOrt){                      //Rekusive Funktion zur Auswahl des Ortes
 
     lcd.setCursor(0,2);
     lcd.println("-> "+orte[lowestOrt]);
 
     while(knopflinks == 0 && knopfrechts== 0){
-        knopfrechts = //PINXY;
-        knopflinks = //PINXY;
+        //knopfrechts = //PINXY;
+        //knopflinks = //PINXY;
     }
     if(knopflinks){
         if (lowestOrt == ortelength-1){
@@ -126,33 +134,45 @@ int getOrt(int lowestOrt){                      //Rekusive Funktion zur Auswahl 
         return lowestOrt;
     }
 }
-void fill() {
-  byte filled = 0;
-  maps[zielChar - 32][5] = 0;                  //setzen des Zielfeldes   TODO char-int-Umrechnung!!
-  for( byte i = 0; filled < cross; i++) {   //einzutragende Distanz erhöhen, bis alle Distanzen eingetragen
-    for( byte j = 0; j < cross; j++){        //Suche welche Kreuzungen maximale eingetragenne Distanz haben
-      if (maps[j][5] == i) {
-        for( byte k = 1; k < 5; k++){       //einzelnen Nachbarn überprüfen
-          if(maps[j][k] != '!'){             //ob sie existieren
-            if(maps[maps[j][k]-32][5] == 9){   //und noch keine Distssnz eingetragen haben
-              maps[maps[j][k]-32][5] = i + 1; //Distanz eintragen
-              filled++;
-            }
-          }
+
+byte getDirection(byte currentDir){
+
+    lcd.setCursor(0,2);
+    lcd.println("-> "+directions[currentDir]);
+
+    while(knopflinks == 0 && knopfrechts== 0){
+        //knopfrechts = //PINXY;
+        //knopflinks = //PINXY;
+    }
+    if(knopflinks){
+        if (currentDir == 3){
+            return getOrt(0);
+        }else{
+        return getOrt(currentDir++);
         }
-      }
+    }else{
+        return currentDir+1;
+    }
+
+}
+
+void fill2(byte node) {
+  for(byte i = 1; i < 5; i++) {
+    if(maps[node][i] != '!' & maps[maps[node][i]-97][5] > maps[node][5]+1) {
+      maps[maps[node][i]-97][5] = maps[node][5] + 1;
+      fill2(maps[node][i]-97);
     }
   }
 }
 
 void rout() {
-  byte pointer = startChar - 32;    //setze Anfagspunkt
+  byte pointer = startChar - 97;    //setze Anfagspunkt
   index = 0;
   while(maps[pointer][5] > 0){       //solange Ziel nicht erreicht
-    byte min = maps[pointer][1]-32;    
+    byte min = maps[pointer][1]-97;    
     byte aim = 1;
     for(byte i = 2; i < 5; i++){
-      if (maps[min][5] > maps[maps[pointer][i] -32][5]){
+      if (maps[min][5] > maps[maps[pointer][i] -97][5]){
         min = maps[pointer][i];          //suche NAchpar mit niedrigster Entfernung zum Ziel 
         aim = i;
       }
@@ -311,8 +331,9 @@ void loop() {
                 Serial.println(index+1);
                 index++;
             } else{
-                index = 0;     //von vorne beginnen, durch while(true) ersetzen fur abbruch
+                //index = 0;     //von vorne beginnen, durch while(true) ersetzen fur abbruch
                 Serial.println("Strecke abgefahren!");
+                while(true){}
             }
         
         }
