@@ -4,7 +4,9 @@
 //Stand: 07.05.2020 12:51
 //*********************************************************
 
-
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27,20,4);
 
 int linksvor = 9;                           //AMT Konfiguration
 int rechtsvor = 7;
@@ -21,6 +23,13 @@ int MRWert ;
 int ALWert ;
 int ARWert ;
 
+int knopfrechts;
+int knopflinks;
+
+int start;
+int ziel;
+String orte[] = {"test","test2","test3"};
+int ortelength = 3;
 int weg[] = {2,0,2,0,2,1,2,0,1,2,0,0};      //Streckenplan, 0 = Geradeaus ; 1 = Links ; 2 = Rechts
 int size = 12;                              //Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
 int index = 0;
@@ -39,6 +48,70 @@ void setup() {
     pinMode(AR,INPUT);
 
     Serial.begin(9600);
+
+    getDestUI();
+}
+
+void getDestUI(){                       //"UI" zum eingeben des Start/Ziel
+    lcd.backlight();
+    lcd.init();
+    lcd.setCursor(0,0);
+    lcd.print("-----Wilkommen-----");
+    lcd.setCursor(0,1);
+    lcd.print("Wandere mit Links <");
+    lcd.setCursor(0,2);
+    lcd.print("Waehle mit Rechts >");
+    lcd.setCursor(0,3);
+    lcd.print("Bestätige...");
+    while(knopfrechts== 0){
+        knopfrechts = //PINXY;
+    }
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Waehle den Start:");
+    start = getOrt(0);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Waehle das Ziel:");
+    ziel = getOrt(0);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Abbruch/Bestaetige:");
+    lcd.setCursor(0,1);
+    lcd.print(orte[start]);
+    lcd.setCursor(0,2);
+    lcd.print("--->");
+    lcd.setCursor(0,3);
+    lcd.print(orte[ziel]);
+    while(knopflinks == 0 && knopfrechts== 0){
+        knopfrechts = //PINXY;
+        knopflinks = //PINXY;
+    }
+    if(knopflinks){
+        getDestUI();
+    }else{
+        lcd.clear();
+    }
+}
+
+int getOrt(int lowestOrt){                      //Rekusive Funktion zur Auswahl des Ortes
+
+    lcd.setCursor(0,2);
+    lcd.println("-> "+orte[lowestOrt]);
+
+    while(knopflinks == 0 && knopfrechts== 0){
+        knopfrechts = //PINXY;
+        knopflinks = //PINXY;
+    }
+    if(knopflinks){
+        if (lowestOrt == ortelength-1){
+            return getOrt(0);
+        }else{
+        return getOrt(lowestOrt++);
+        }
+    }else{
+        return lowestOrt;
+    }
 }
 
 void sensoren(){                    //Updated Senson VAriablen
