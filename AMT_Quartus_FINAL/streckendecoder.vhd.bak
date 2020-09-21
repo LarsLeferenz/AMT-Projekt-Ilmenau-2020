@@ -1,0 +1,190 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY streckendecoder IS
+    PORT (
+        reset           : IN STD_LOGIC; 
+        clock           : IN STD_LOGIC;
+        barcode_clock   : IN STD_LOGIC;
+        barcode_data    : IN STD_LOGIC;
+        nextdata        : IN STD_LOGIC; 
+        ready           : OUT STD_LOGIC;
+        data_0          : OUT STD_LOGIC;
+        data_1          : OUT STD_LOGIC
+    );
+END streckendecoder;
+
+architecture Behavioral OF streckendecoder IS
+    type tState is      (   
+                        z_Standby,
+                        z_decoded_bit0,
+                        z_decoded_bit1,
+                        z_decoded_bit2,
+                        z_decoded_bit3,
+                        z_decoded_bit4,
+                        z_decoded_bit5,
+                        z_decoded_bit6,
+                        z_decoded_bit7,
+                        z_decoded_bit8,
+                        z_decoded_bit9,
+                        z_decoded_bit10,
+                        z_decoded_bit11,
+                        z_decoded_bit12,
+                        z_decoded_bit13,
+                        z_decoded_bit14,
+                        z_output_command0,
+                        z_output_command1,
+                        z_output_command2,
+                        z_output_command3,
+                        z_output_command4,
+                        z_output_command5,
+                        z_output_command6,
+                        z_output_command7,
+                        z_finished
+                    );
+signal sCurrentState : tState;
+signal sReady : STD_LOGIC;
+signal sFahrstrecke : STD_LOGIC_VECTOR(15 downto 0);
+
+BEGIN
+    PROCESS (clock,reset,barcode_clock,nextdata)
+    BEGIN
+        IF (reset='0') THEN
+            sCurrentState <= z_Standby;
+            sReady        <= '0';
+			sFahrstrecke  <= (others => '0');	
+        ELSIF(clock='1' AND clock'event) THEN
+            CASE sCurrentState IS
+                WHEN z_Standby          =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit0;
+                                                                sFahrstrecke(0) <= barcode_data;
+                                            else sCurrentState <= z_Standby;    
+                                            end if; 
+                when z_decoded_bit0      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit1; 
+                                                                sFahrstrecke(1) <= barcode_data;
+                                            else sCurrentState <= z_decoded_bit0;    
+                                            end if; 
+                when z_decoded_bit1      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit2;
+                                                                sFahrstrecke(2) <= barcode_data;            
+                                            else sCurrentState <= z_decoded_bit1;    
+                                            end if; 
+                when z_decoded_bit2      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit3;
+                                                                sFahrstrecke(3) <= barcode_data;                                                                
+                                            else sCurrentState <= z_decoded_bit2;    
+                                            end if; 
+                when z_decoded_bit3      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit4;
+                                                                sFahrstrecke(4) <= barcode_data;
+                                            else sCurrentState <= z_decoded_bit3;    
+                                            end if; 
+                when z_decoded_bit4      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit5;
+                                                                sFahrstrecke(5) <= barcode_data;                                                                
+                                            else sCurrentState <= z_decoded_bit4;    
+                                            end if; 
+                when z_decoded_bit5      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit6;
+                                                                sFahrstrecke(6) <= barcode_data;
+                                            else sCurrentState <= z_decoded_bit5;    
+                                            end if; 
+                when z_decoded_bit6      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit7;
+                                                                sFahrstrecke(7) <= barcode_data;                                                                
+                                            else sCurrentState <= z_decoded_bit6;    
+                                            end if; 
+                when z_decoded_bit7      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit8;
+                                                                sFahrstrecke(8) <= barcode_data; 
+                                            else sCurrentState <= z_decoded_bit7;    
+                                            end if; 
+                when z_decoded_bit8      =>  if (barcode_clock='1' AND barcode_clock'event) then
+                                                                sCurrentState <= z_decoded_bit9;
+                                                                sFahrstrecke(9) <= barcode_data; 
+                                            else sCurrentState <= z_decoded_bit8;    
+                                            end if; 
+                when z_decoded_bit9      =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit10;
+                                                                sFahrstrecke(10) <= barcode_data; 
+                                            else sCurrentState <= z_decoded_bit9;    
+                                            end if; 
+                when z_decoded_bit10     =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit11;
+                                                                sFahrstrecke(11) <= barcode_data; 
+                                            else sCurrentState <= z_decoded_bit10;    
+                                            end if; 
+                when z_decoded_bit11     =>  if (barcode_clock='1' AND barcode_clock'event) then
+                                                                sCurrentState <= z_decoded_bit12;
+                                                                sFahrstrecke(12) <= barcode_data; 
+                                            else sCurrentState <= z_decoded_bit11;    
+                                            end if; 
+                when z_decoded_bit12     =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit13;
+                                                                sFahrstrecke(13) <= barcode_data; 
+                                            else sCurrentState <= z_decoded_bit12;    
+                                            end if; 
+                when z_decoded_bit13     =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_decoded_bit14;
+                                                                sFahrstrecke(14) <= barcode_data; 
+                                            else sCurrentState <= z_decoded_bit13;    
+                                            end if; 
+                when z_decoded_bit14     =>  if (barcode_clock='1' AND barcode_clock'event) then 
+                                                                sCurrentState <= z_output_command0;
+                                                                sFahrstrecke(15) <= barcode_data; 
+                                                                sReady <= '1'; 
+                                            else sCurrentState <= z_decoded_bit14;    
+                                            end if; 
+                when z_output_command0  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_output_command1; 
+                                            else sCurrentState <= z_output_command0;    
+                                            end if; 
+                when z_output_command1  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_output_command2; 
+                                            else sCurrentState <= z_output_command1;    
+                                            end if; 
+                when z_output_command2  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_output_command3; 
+                                            else sCurrentState <= z_output_command2;    
+                                            end if; 
+                when z_output_command3  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_output_command4; 
+                                            else sCurrentState <= z_output_command3;    
+                                            end if; 
+                when z_output_command4  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_output_command5; 
+                                            else sCurrentState <= z_output_command4;    
+                                            end if; 
+                when z_output_command5  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_output_command6; 
+                                            else sCurrentState <= z_output_command5;    
+                                            end if; 
+                when z_output_command6  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_output_command7; 
+                                            else sCurrentState <= z_output_command6;    
+                                            end if; 
+                when z_output_command7  =>  if (nextdata='1' AND nextdata'event) then sCurrentState <= z_finished; 
+                                            else sCurrentState <= z_output_command7;    
+                                            end if; 
+                when z_finished         =>  sCurrentState <= z_finished;
+            END CASE;
+        END IF; 
+    END PROCESS;
+    
+    with sCurrentState select data_0                            <=  sFahrstrecke(0) when z_output_command0,  
+                                                                    sFahrstrecke(2) when z_output_command1,
+                                                                    sFahrstrecke(4) when z_output_command2,
+                                                                    sFahrstrecke(6) when z_output_command3,
+                                                                    sFahrstrecke(8) when z_output_command4,
+                                                                    sFahrstrecke(10) when z_output_command5,
+                                                                    sFahrstrecke(12) when z_output_command6,
+                                                                    sFahrstrecke(12) when z_output_command7,                                                                                                                                      
+                                                                    '0' when others;
+                                                                    
+    with sCurrentState select data_1                            <=  sFahrstrecke(0) when z_output_command0,  
+                                                                    sFahrstrecke(2) when z_output_command1,
+                                                                    sFahrstrecke(4) when z_output_command2,
+                                                                    sFahrstrecke(6) when z_output_command3,
+                                                                    sFahrstrecke(8) when z_output_command4,
+                                                                    sFahrstrecke(10) when z_output_command5,
+                                                                    sFahrstrecke(12) when z_output_command6,
+                                                                    sFahrstrecke(12) when z_output_command7,                                                                                                                                      
+                                                                    '0' when others;
+    
+    ready   <=  sready;
+    
+end architecture;

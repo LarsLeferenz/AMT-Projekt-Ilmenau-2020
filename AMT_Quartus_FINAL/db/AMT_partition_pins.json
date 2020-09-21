@@ -1,0 +1,61 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "DO_3",
+					"strict" : false
+				},
+				{
+					"name" : "DO_4",
+					"strict" : false
+				},
+				{
+					"name" : "DO_1",
+					"strict" : false
+				},
+				{
+					"name" : "DO_2",
+					"strict" : false
+				},
+				{
+					"name" : "extl_SDA",
+					"strict" : false
+				},
+				{
+					"name" : "extl_SCL",
+					"strict" : false
+				},
+				{
+					"name" : "reset",
+					"strict" : false
+				},
+				{
+					"name" : "CLK",
+					"strict" : false
+				},
+				{
+					"name" : "DIN_3",
+					"strict" : false
+				},
+				{
+					"name" : "DIN_2",
+					"strict" : false
+				},
+				{
+					"name" : "DIN_1",
+					"strict" : false
+				},
+				{
+					"name" : "DIN_4",
+					"strict" : false
+				},
+				{
+					"name" : "Button_1",
+					"strict" : false
+				}
+			]
+		}
+	]
+}

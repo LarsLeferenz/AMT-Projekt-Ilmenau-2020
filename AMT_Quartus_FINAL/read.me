@@ -1,0 +1,92 @@
+Quartus Projektverzeichnis für
+==============================
+
+Die Ansteuerung des AMT mit Fahrsteuerung, Fahrstrecke und Ausgabe auf die 7 Segment Anzeigen
+
+Die Projekt-Datei in diesem Verzeichnis ist: AMT.qpf
+
+Gegeben wird ein fertig verdrahtetes Dokument mit vorbereiteten Elementen die zu bearbeiten sind.
+Vorgegeben sind die fertige Fahrsteuerung und Debouncer für die Tasten.
+Zu bearbeiten sind die Fahrstrecke und die in den IP_Cores befindlichen BCD_Zähler und dem 7-Segment-Dekoder.
+
+(a) fahrstrecke
+===============
+Enthält den Automaten der Abbiegeanweisungen an die Fahrsteuerung weitergibt und Signale ausgibt, die die BCD-Zähler zählen und auf den 7-Segment Anzeigen darstellen, um die Anzahl der Abbiegevorgänge nach links oder rechts bzw. gerade überfahrene Kreuzungen auszugeben.
+Dieser Automat ist gemäß der gegebene Schnittstelle zwischen fahrsteuerung und fahrstrecke zu vervollständigen.
+   
+(b) fahrsteuerung
+=================
+Ist ein fertig vorbereiteter Automat, der die Ansteuerung der Motoren und einiger Status LEDs übernimmt und folgende Eigenschaften hat(Genauere Beschreibung im Dokument "Digitalsteuerung_AMT..."). Die Ausgänge für den Funktionsindex könnten auf eine der 7-Segment Anzeigen gelegt werden, um beim Debuggen den aktuellen Zustand der Fahrsteuerung anzugeigen.
+
+Eingänge
+	xkl Kreuzungssensor links
+	xkr Kreuzungssensor rechts
+	xll Liniensensor links
+	xlr Liniensensor rechts
+	sl Befehl zum links abbiegen
+	sr Befehl zum rechts abbiegen
+	dl Befehl zum links drehen
+	dr Befehl zum rechts drehen
+
+Ausgänge
+	yml Motor links vorwärts 
+	ymr Motor rechts vorwärts
+	ymlr Motor links rückwärts
+	ymrr Motor rechts rückwärts
+	cl Kreuzungssensor links in Abzweig sonst 0
+	cr Kreuzungssensor rechts in Abzweig sonst 0
+	fk Kurvenfahrt Indikator
+	z2, z1, z0 Geben den Zustandsindex binär codiert aus
+
+Zustände:
+	IdleFahren
+		Folgt der Linie(Ein Rad vorwärts oder beide Räder vorwärts)
+		Wechselt
+			-Für eines der beiden Dreh Signale auf 1 in den entsprechenden Dreh Zustand
+			-Für einen der beiden Kreuzungssensoren auf 1 in Abzweig
+		
+	Abzweig
+		Folgt der Linie wenn nicht sl = sr = 1 bis der Kreuzungssensor auf der Seite, in die abgebogen werden soll, 1 zurückgibt oder überfährt die Kreuzung falls sl = s0 = 0
+		Gleicht aus, wenn sl = 1 und sr = 1 und überfährt die Kreuzung
+		Wechselt
+			-Zu IdleFahren falls beide Kruzungssensoren 0
+			-Zu KurveLinks wenn xkl = 1 und sl = 1 und sr = 0
+			-Zu KurveRechts wenn xks = 1 und sl = 0 und sr = 1
+			
+	KurveRechts
+		Fährt eine Rechtskurve
+		Wechselt
+			Zu LinieRechts wenn xll = 0 
+			
+	LinieRechts
+		Vollendet die Rechtskurve
+		Wechselt
+			Zu IdleFahren wenn xll = 1 
+			
+	KurveLinks
+		Fährt eine Linkskurve
+		Wechselt
+			Zu LinieLinks wenn der xlr = 0
+
+	LinieLinks
+		Vollendet die Rechtskurve
+		Wechselt
+			Zu IdleFahren wenn der xlr = 1
+
+	KreiselnRechts
+		Führt Rechtsdrehungen aus
+		KEIN Wechsel mehr möglich
+
+	KreiselnLinks
+		Führt Linksdrehungen aus
+		KEIN Wechsel mehr möglich
+
+
+(c) fahrsteuerung_alternative
+=============================
+Äquivalent zu fahrsteuerung nur können hier bei der Linienverfolgung auch dräder rückwärts drehen und der AMT(Insbesondere relativ breite Modelle) können kleinere Kurvenradien fahren.
+Um diese Version zu verwenden muss im AMT.bdf das Symbolfile ersetzt werden.
+ 
+(d) PSPU_Debounce
+=================
+Fängt Prellen der Tasten ab. Muss nicht bearbeitet werden.

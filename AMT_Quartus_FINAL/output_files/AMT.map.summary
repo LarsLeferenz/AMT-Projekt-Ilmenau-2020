@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Mon Sep 21 10:59:54 2020
+Quartus Prime Version : 20.1.0 Build 711 06/05/2020 SJ Lite Edition
+Revision Name : AMT
+Top-level Entity Name : AMT
+Family : Cyclone IV E
+Total logic elements : 1,486
+    Total combinational functions : 1,413
+    Dedicated logic registers : 543
+Total registers : 543
+Total pins : 22
+Total virtual pins : 0
+Total memory bits : 144
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0

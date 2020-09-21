@@ -1,0 +1,92 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY bugtest IS
+    PORT (
+        reset           : IN STD_LOGIC; 
+        clock           : IN STD_LOGIC;
+        barcode_clock   : IN STD_LOGIC;
+        barcode_data    : IN STD_LOGIC;
+    );
+END streckendecoder;
+
+architecture Behavioral OF streckendecoder IS
+    type tState is      (   
+                        z_Standby,
+								z_decoded_bit0WAIT,
+                        z_decoded_bit0,
+                        z_finished
+                    );
+signal sCurrentState : tState;
+signal sCurrentStateN : tState;
+signal sData_0, sData_1: STD_LOGIC;
+signal sReady : STD_LOGIC;
+signal sFahrstrecke : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+signal sFahrstreckeC : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+
+
+BEGIN
+	 PROCESS (clock,sCurrentStateN)
+    BEGIN
+        IF (clock='1' AND clock'event) THEN
+            sCurrentState <= sCurrentStateN;
+        END IF;
+    END PROCESS;
+
+    PROCESS (reset,sCurrentState,barcode_clock, barcode_data, nextdata)
+    BEGIN
+        IF (reset='0') THEN
+            sCurrentStateN <= z_Standby;
+            sReady <= '0';
+				data_0 <= '0';
+				data_1 <= '0';
+				sFahrstrecke <= (others => '0');
+				sFahrstreckeC <= "1001100110011001";
+	
+        ELSE
+				sReady <= '0';
+				data_0 <= '0';
+				data_1 <= '0';
+            CASE sCurrentState IS
+                WHEN z_Standby           =>  if (barcode_clock='1') then 
+                                                                sCurrentStateN <= z_decoded_bit0WAIT;
+                                                                sFahrstrecke(0) <= barcode_data;
+                                            else sCurrentStateN <= z_Standby;	    
+                                            end if;
+														  sReady <= '0';
+														  data_0 <= '0';
+														  data_1 <= '0';
+														  
+                WHEN z_decoded_bit0WAIT  =>  if (barcode_clock='0') then 
+                                                                sCurrentStateN <= z_decoded_bit0;
+                                            else sCurrentStateN <= z_decoded_bit0WAIT;    
+                                            end if; 
+														  sReady <= '0';
+														  data_0 <= '0';
+														  data_1 <= '0';
+                when z_decoded_bit0      =>  if (barcode_clock='1') then 
+                                                                sCurrentStateN <= z_decoded_bit1WAIT; 
+                                                                sFahrstrecke(1) <= barcode_data;
+                                            else sCurrentStateN <= z_decoded_bit0;    
+                                            end if; 
+														  sReady <= '0';
+														  data_0 <= '0';
+														  data_1 <= '0';
+
+					when z_finished         =>  sCurrentStateN <= z_finished;  
+														  data_0 <= '0';
+														  data_1 <= '0';
+														  sReady <= '1';
+					
+					when others => sReady <= '1';
+										data_0 <= '0';
+										data_1 <= '0';
+
+														  
+            END CASE;					 
+
+        END IF; 
+	  END PROCESS;
+	 
+	ready   <=  sReady;
+end architecture;

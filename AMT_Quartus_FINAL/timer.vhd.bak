@@ -1,0 +1,54 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity timer is
+	generic 
+	(
+	--- Eingangsfrequenz in Hz (default = 10 MHz)
+	gInputClockFreq : INTEGER := 10000000;	
+	--- Ausgangsfrequenz in Hz (default = 1 kHz)
+	gOutputClockFreq : Integer := 1000
+	);
+	port
+	(
+		-- input clock
+		clock_in					: in 	std_logic;
+		-- output clock
+		clock_out				: out std_logic
+	);
+-- end interface declaration
+end timer;
+
+architecture counters of timer is
+
+	SIGNAL	count				: INTEGER range 0 to (gInputClockFreq/gOutputClockFreq);
+	SIGNAL  	clock_tmp		: STD_LOGIC;
+
+BEGIN
+
+--Divide by 10000 to get 1,000 kHz
+PROCESS (clock_in)
+	BEGIN
+		IF rising_edge(clock_in) THEN
+			IF count < (gInputClockFreq/gOutputClockFreq) THEN
+			   count <= count + 1;
+			ELSE
+			   count <= 0;
+			END IF;
+			IF count < ((gInputClockFreq/gOutputClockFreq)/2) THEN
+				clock_tmp <= '0';
+			ELSE
+				clock_tmp <= '1';
+			END IF;
+		END IF;	
+	END PROCESS;
+
+
+-- Ripple clocks are used in this code to save prescalar hardware
+-- Sync all clock prescalar outputs back to master clock signal
+
+clock_out  <= clock_tmp;
+
+end counters;

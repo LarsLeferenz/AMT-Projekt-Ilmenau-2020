@@ -1,0 +1,38 @@
+Quartus II Archive log --	C:/Users/Robin/Desktop/BES/AMT/AMT_tmp_archive.qarlog
+
+Archive:	C:/Users/Robin/Desktop/BES/AMT/AMT_tmp_archive.qar
+Date:		Mon May 02 08:48:46 2016
+Quartus II 64-Bit		13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition
+
+	=========== Files Selected: ===========
+C:/Users/Robin/Desktop/BES/AMT/AMT.bdf
+C:/Users/Robin/Desktop/BES/AMT/AMT.qpf
+C:/Users/Robin/Desktop/BES/AMT/AMT.qsf
+C:/Users/Robin/Desktop/BES/AMT/AMT_14.flow.rpt
+C:/Users/Robin/Desktop/BES/AMT/AMT_14.map.rpt
+C:/Users/Robin/Desktop/BES/AMT/AMT_14.map.summary
+C:/Users/Robin/Desktop/BES/AMT/AMT_14.qsf
+C:/Users/Robin/Desktop/BES/AMT/AMT_assignment_defaults.qdf
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/bin2seg/bin2seg.bdf
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/clk_div/clk100Hz.vhd
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/counter/counter.smf
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/counter/counter.vhd
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/debounce/debounce.vhd
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/fahrsteuerung/fahrsteuerung.smf
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/fahrsteuerung/fahrsteuerung.vhd
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/fahrstrecke/fahrstrecke.smf
+C:/Users/Robin/Desktop/BES/AMT/Funktionen/fahrstrecke/fahrstrecke.vhd
+C:/Users/Robin/Desktop/BES/AMT/incremental_db/compiled_partitions/AMT.db_info
+C:/Users/Robin/Desktop/BES/AMT/incremental_db/compiled_partitions/AMT_14.db_info
+C:/altera/quartus/bin64/assignment_defaults.qdf
+c:/altera/quartus/bin64/assignment_defaults.qdf
+	======= Total: 21 files to archive =======
+
+	================ Status: ===============
+All files archived successfully.
+
+
+******* Archived project restoration attempt on Mon May 02 08:48:48 2016
+Source archive file:	C:/Users/Robin/Desktop/BES/AMT/AMT_tmp_archive.qar
+Archive was extracted into	C:/Users/Robin/Desktop/BES/AMT_Template/
+		 - successfully.

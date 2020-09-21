@@ -1,0 +1,16 @@
+Fitter Status : Successful - Mon Sep 21 11:00:02 2020
+Quartus Prime Version : 20.1.0 Build 711 06/05/2020 SJ Lite Edition
+Revision Name : AMT
+Top-level Entity Name : AMT
+Family : Cyclone IV E
+Device : EP4CE22F17C6
+Timing Models : Final
+Total logic elements : 1,428 / 22,320 ( 6 % )
+    Total combinational functions : 1,415 / 22,320 ( 6 % )
+    Dedicated logic registers : 543 / 22,320 ( 2 % )
+Total registers : 543
+Total pins : 22 / 154 ( 14 % )
+Total virtual pins : 0
+Total memory bits : 144 / 608,256 ( < 1 % )
+Embedded Multiplier 9-bit elements : 0 / 132 ( 0 % )
+Total PLLs : 0 / 4 ( 0 % )

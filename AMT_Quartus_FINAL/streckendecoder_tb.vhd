@@ -1,0 +1,184 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE work.streckendecoder;
+
+ENTITY streckendecoder_tb IS
+END ENTITY;
+
+ARCHITECTURE Testbench OF streckendecoder_tb IS
+
+signal sClk              : STD_LOGIC := '0';
+signal sReset            : STD_LOGIC := '0';
+signal sBarcode_clock    : STD_LOGIC := '0';
+signal sBarcode_data     : STD_LOGIC := '0';
+signal sNextdata         : STD_LOGIC := '0';
+signal sStrecke          : STD_LOGIC_VECTOR(15 downto  0) := "1001000110111111"; 
+
+
+
+BEGIN
+
+    streckendecoder_testdecode : streckendecoder PORT MAP (
+            reset           => sReset,
+            clock           => sClk,
+            barcode_clock   => sBarcode_clock,
+            barcode_data    => sBarcode_data,
+            nextdata        => sNextdata,
+            ready           => open,
+            data_0          => open,
+            data_1          => open 
+    );
+
+    
+    
+    tb_clock_proc : PROCESS
+    BEGIN
+    while (true) LOOP
+        sClk <= '1'; wait for 20ns;
+        sClk <= '0'; wait for 20ns;
+    END LOOP;
+    END PROCESS tb_clock_proc;
+    
+    tb_main_proc : PROCESS
+    BEGIN
+        wait for 100 ns;
+        sReset <= '1';
+        -- Bit 0
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(0);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 1
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(1);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 2
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(2);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 3
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(3);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 4
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(4);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 5
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(5);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 6
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(6);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 7
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(7);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 8
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(8);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 9
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(9);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 10
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(10);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 11
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(11);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 12
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(12);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 13
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(13);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 14
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(14);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        -- Bit 15
+        wait for 100 ns;
+        sBarcode_data <= sStrecke(15);
+        sBarcode_clock <= '1';
+        wait for 100 ns;
+        sBarcode_clock <= '0';
+        
+        -- Get Output
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+        
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+        
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+        
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+        
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+        
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+        
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+        
+        wait for 100 ns;
+        sNextdata <= '1';
+        wait for 100 ns;
+        sNextdata <= '0';
+	END PROCESS tb_main_proc;
+END Testbench;

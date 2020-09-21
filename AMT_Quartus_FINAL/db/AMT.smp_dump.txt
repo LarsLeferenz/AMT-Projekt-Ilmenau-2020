@@ -1,0 +1,287 @@
+
+State Machine - |AMT|I2CUSnano:inst43|sCurrentState
+Name sCurrentState.z_save sCurrentState.z_Read_WAIT sCurrentState.z_Read sCurrentState.z_Standby 
+sCurrentState.z_Standby 0 0 0 0 
+sCurrentState.z_Read 0 0 1 1 
+sCurrentState.z_Read_WAIT 0 1 0 1 
+sCurrentState.z_save 1 0 0 1 
+
+State Machine - |AMT|I2CIOEx:inst80|sCurrentStateN
+Name sCurrentStateN.z_WriteOUT_WAIT sCurrentStateN.z_WriteOUT sCurrentStateN.z_WriteReg_WAIT sCurrentStateN.z_WriteReg sCurrentStateN.z_ReadReg_WAIT sCurrentStateN.z_ReadReg sCurrentStateN.z_ReadRegSet_WAIT sCurrentStateN.z_ReadRegSet sCurrentStateN.z_PURset_WAIT sCurrentStateN.z_PURset sCurrentStateN.z_PURSetreg_WAIT sCurrentStateN.z_PURSetreg sCurrentStateN.z_PolSet_WAIT sCurrentStateN.z_PolSet sCurrentStateN.z_IODEF_WAIT sCurrentStateN.z_IODEF sCurrentStateN.z_IODEFReg_WAIT sCurrentStateN.z_IODEFReg sCurrentStateN.z_Standby 
+sCurrentStateN.z_Standby 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+sCurrentStateN.z_IODEFReg 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+sCurrentStateN.z_IODEFReg_WAIT 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+sCurrentStateN.z_IODEF 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+sCurrentStateN.z_IODEF_WAIT 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+sCurrentStateN.z_PolSet 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+sCurrentStateN.z_PolSet_WAIT 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+sCurrentStateN.z_PURSetreg 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+sCurrentStateN.z_PURSetreg_WAIT 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_PURset 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_PURset_WAIT 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_ReadRegSet 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_ReadRegSet_WAIT 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_ReadReg 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_ReadReg_WAIT 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_WriteReg 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_WriteReg_WAIT 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_WriteOUT 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_WriteOUT_WAIT 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|flipflop:inst12|fstate
+Name fstate.active2 fstate.wait2 fstate.active1 fstate.wait1 
+fstate.wait1 0 0 0 0 
+fstate.active1 0 0 1 1 
+fstate.wait2 0 1 0 1 
+fstate.active2 1 0 0 1 
+
+State Machine - |AMT|HEX_Counter:inst6|fstate
+Name fstate.ZF fstate.ZE fstate.ZD fstate.ZC fstate.ZB fstate.ZA fstate.Z9 fstate.Z8 fstate.Z7 fstate.Z6 fstate.Z5 fstate.Z4 fstate.Z3 fstate.Z2 fstate.Z1 fstate.Z0 
+fstate.Z0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+fstate.Z1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+fstate.Z2 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+fstate.Z3 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+fstate.Z4 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+fstate.Z5 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+fstate.Z6 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+fstate.Z7 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+fstate.Z8 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+fstate.Z9 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+fstate.ZA 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+fstate.ZB 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZC 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZD 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZE 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZF 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|flipflop:inst14|fstate
+Name fstate.active2 fstate.wait2 fstate.active1 fstate.wait1 
+fstate.wait1 0 0 0 0 
+fstate.active1 0 0 1 1 
+fstate.wait2 0 1 0 1 
+fstate.active2 1 0 0 1 
+
+State Machine - |AMT|HEX_Counter:inst9|fstate
+Name fstate.ZF fstate.ZE fstate.ZD fstate.ZC fstate.ZB fstate.ZA fstate.Z9 fstate.Z8 fstate.Z7 fstate.Z6 fstate.Z5 fstate.Z4 fstate.Z3 fstate.Z2 fstate.Z1 fstate.Z0 
+fstate.Z0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+fstate.Z1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+fstate.Z2 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+fstate.Z3 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+fstate.Z4 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+fstate.Z5 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+fstate.Z6 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+fstate.Z7 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+fstate.Z8 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+fstate.Z9 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+fstate.ZA 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+fstate.ZB 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZC 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZD 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZE 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZF 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|flipflop:inst13|fstate
+Name fstate.active2 fstate.wait2 fstate.active1 fstate.wait1 
+fstate.wait1 0 0 0 0 
+fstate.active1 0 0 1 1 
+fstate.wait2 0 1 0 1 
+fstate.active2 1 0 0 1 
+
+State Machine - |AMT|HEX_Counter:inst8|fstate
+Name fstate.ZF fstate.ZE fstate.ZD fstate.ZC fstate.ZB fstate.ZA fstate.Z9 fstate.Z8 fstate.Z7 fstate.Z6 fstate.Z5 fstate.Z4 fstate.Z3 fstate.Z2 fstate.Z1 fstate.Z0 
+fstate.Z0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+fstate.Z1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+fstate.Z2 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+fstate.Z3 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+fstate.Z4 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+fstate.Z5 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+fstate.Z6 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+fstate.Z7 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+fstate.Z8 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+fstate.Z9 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+fstate.ZA 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+fstate.ZB 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZC 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZD 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZE 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZF 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|I2C_LCD_PCF8574_cc_op_sIF:inst1|sCurrentStateN
+Name sCurrentStateN.z_return sCurrentStateN.z_SendTextNoenaLO_WAIT sCurrentStateN.z_SendTextNoenaLO sCurrentStateN.z_SendTextenaLO_WAIT sCurrentStateN.z_SendTextenaLO sCurrentStateN.z_SendTextNoenaHI_WAIT sCurrentStateN.z_SendTextNoenaHI sCurrentStateN.z_SendTextenaHI_WAIT sCurrentStateN.z_SendTextenaHI sCurrentStateN.z_SendCMD_WAIT sCurrentStateN.z_SendCMD sCurrentStateN.z_Standby 
+sCurrentStateN.z_Standby 0 0 0 0 0 0 0 0 0 0 0 0 
+sCurrentStateN.z_SendCMD 0 0 0 0 0 0 0 0 0 0 1 1 
+sCurrentStateN.z_SendCMD_WAIT 0 0 0 0 0 0 0 0 0 1 0 1 
+sCurrentStateN.z_SendTextenaHI 0 0 0 0 0 0 0 0 1 0 0 1 
+sCurrentStateN.z_SendTextenaHI_WAIT 0 0 0 0 0 0 0 1 0 0 0 1 
+sCurrentStateN.z_SendTextNoenaHI 0 0 0 0 0 0 1 0 0 0 0 1 
+sCurrentStateN.z_SendTextNoenaHI_WAIT 0 0 0 0 0 1 0 0 0 0 0 1 
+sCurrentStateN.z_SendTextenaLO 0 0 0 0 1 0 0 0 0 0 0 1 
+sCurrentStateN.z_SendTextenaLO_WAIT 0 0 0 1 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_SendTextNoenaLO 0 0 1 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_SendTextNoenaLO_WAIT 0 1 0 0 0 0 0 0 0 0 0 1 
+sCurrentStateN.z_return 1 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|BusManager:inst26|sCurrentState
+Name sCurrentState.z_US sCurrentState.z_WAITUS sCurrentState.z_IOEx sCurrentState.z_WAITIOEx sCurrentState.z_ADC sCurrentState.z_WAITADC sCurrentState.z_LCD sCurrentState.z_WAITLCD sCurrentState.z_SevSeg sCurrentState.z_WAITSevSeg 
+sCurrentState.z_WAITSevSeg 0 0 0 0 0 0 0 0 0 0 
+sCurrentState.z_SevSeg 0 0 0 0 0 0 0 0 1 1 
+sCurrentState.z_WAITLCD 0 0 0 0 0 0 0 1 0 1 
+sCurrentState.z_LCD 0 0 0 0 0 0 1 0 0 1 
+sCurrentState.z_WAITADC 0 0 0 0 0 1 0 0 0 1 
+sCurrentState.z_ADC 0 0 0 0 1 0 0 0 0 1 
+sCurrentState.z_WAITIOEx 0 0 0 1 0 0 0 0 0 1 
+sCurrentState.z_IOEx 0 0 1 0 0 0 0 0 0 1 
+sCurrentState.z_WAITUS 0 1 0 0 0 0 0 0 0 1 
+sCurrentState.z_US 1 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|i2c_master:inst46|state
+Name state.stop state.mstr_ack state.slv_ack2 state.rd state.wr state.slv_ack1 state.command state.start state.ready 
+state.ready 0 0 0 0 0 0 0 0 0 
+state.start 0 0 0 0 0 0 0 1 1 
+state.command 0 0 0 0 0 0 1 0 1 
+state.slv_ack1 0 0 0 0 0 1 0 0 1 
+state.wr 0 0 0 0 1 0 0 0 1 
+state.rd 0 0 0 1 0 0 0 0 1 
+state.slv_ack2 0 0 1 0 0 0 0 0 1 
+state.mstr_ack 0 1 0 0 0 0 0 0 1 
+state.stop 1 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|NStart:inst5|flipflop:inst12|fstate
+Name fstate.active2 fstate.wait2 fstate.active1 fstate.wait1 
+fstate.wait1 0 0 0 0 
+fstate.active1 0 0 1 1 
+fstate.wait2 0 1 0 1 
+fstate.active2 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|HEX_einsverschoben:inst19|fstate
+Name fstate.vor2 fstate.Z0 fstate.ZF fstate.ZE fstate.ZD fstate.ZC fstate.ZB fstate.ZA fstate.Z9 fstate.Z8 fstate.Z7 fstate.Z6 fstate.Z5 fstate.Z4 fstate.Z3 fstate.Z2 fstate.Z1 fstate.vor 
+fstate.vor 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+fstate.Z1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+fstate.Z2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+fstate.Z3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+fstate.Z4 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+fstate.Z5 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+fstate.Z6 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+fstate.Z7 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+fstate.Z8 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+fstate.Z9 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+fstate.ZA 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+fstate.ZB 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZC 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZD 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZE 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZF 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.Z0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.vor2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst8|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst7|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst5|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst6|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst4|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst2|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst3|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst1|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst10|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|routen_speicher:inst2|vierbit_Save:inst9|fstate
+Name fstate.z3 fstate.z2 fstate.z1 fstate.z0 
+fstate.z0 0 0 0 0 
+fstate.z1 0 0 1 1 
+fstate.z2 0 1 0 1 
+fstate.z3 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|einlesen:inst52|flipflop:inst2|fstate
+Name fstate.active2 fstate.wait2 fstate.active1 fstate.wait1 
+fstate.wait1 0 0 0 0 
+fstate.active1 0 0 1 1 
+fstate.wait2 0 1 0 1 
+fstate.active2 1 0 0 1 
+
+State Machine - |AMT|NStart:inst5|einlesen:inst52|HEX_einsverschoben:inst1|fstate
+Name fstate.vor2 fstate.Z0 fstate.ZF fstate.ZE fstate.ZD fstate.ZC fstate.ZB fstate.ZA fstate.Z9 fstate.Z8 fstate.Z7 fstate.Z6 fstate.Z5 fstate.Z4 fstate.Z3 fstate.Z2 fstate.Z1 fstate.vor 
+fstate.vor 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+fstate.Z1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 
+fstate.Z2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 
+fstate.Z3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 
+fstate.Z4 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 
+fstate.Z5 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 
+fstate.Z6 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 
+fstate.Z7 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 
+fstate.Z8 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 
+fstate.Z9 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 
+fstate.ZA 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 
+fstate.ZB 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZC 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZD 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZE 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.ZF 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.Z0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+fstate.vor2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+
+State Machine - |AMT|NStart:inst5|NFolge:inst|fstate
+Name fstate.KreuzLeer fstate.kreuzrech fstate.kreuzlink fstate.kreuzauf fstate.schrechts fstate.schlinks fstate.kreuzab fstate.kreuz fstate.rechts fstate.links fstate.gerade 
+fstate.gerade 0 0 0 0 0 0 0 0 0 0 0 
+fstate.links 0 0 0 0 0 0 0 0 0 1 1 
+fstate.rechts 0 0 0 0 0 0 0 0 1 0 1 
+fstate.kreuz 0 0 0 0 0 0 0 1 0 0 1 
+fstate.kreuzab 0 0 0 0 0 0 1 0 0 0 1 
+fstate.schlinks 0 0 0 0 0 1 0 0 0 0 1 
+fstate.schrechts 0 0 0 0 1 0 0 0 0 0 1 
+fstate.kreuzauf 0 0 0 1 0 0 0 0 0 0 1 
+fstate.kreuzlink 0 0 1 0 0 0 0 0 0 0 1 
+fstate.kreuzrech 0 1 0 0 0 0 0 0 0 0 1 
+fstate.KreuzLeer 1 0 0 0 0 0 0 0 0 0 1 

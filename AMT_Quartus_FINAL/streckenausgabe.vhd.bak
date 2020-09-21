@@ -1,0 +1,57 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY streckenausgabe IS
+    PORT (											--SChnittstellendefinition
+        reset           : IN STD_LOGIC; 
+        clock           : IN STD_LOGIC;
+		  Fahrstrecke		: IN STD_LOGIC_VECTOR (15 downto 0);      
+		  ready           : IN STD_LOGIC;
+        
+        data_1          : OUT STD_LOGIC;
+
+    );
+END streckenausgabe;
+
+architecture Behavioral OF streckenausgabe IS
+    type tState is      (   					-- Definition der Zustände
+                        z_Standby,
+
+                    );
+						  
+-- Variablendeklaration
+signal sCurrentState : tState; 
+signal sCurrentStateN : tState;
+signal sData_0, sData_1: STD_LOGIC;
+signal sReady : STD_LOGIC;
+signal sFahrstrecke : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+signal sFahrstreckeC : STD_LOGIC_VECTOR(15 downto 0) := (others => '0');
+
+
+BEGIN
+
+-- Prozess 1: Clock
+	 PROCESS (clock,sCurrentStateN)
+    BEGIN
+        IF (clock='1' AND clock'event) THEN
+            sCurrentState <= sCurrentStateN;
+        END IF;
+    END PROCESS;
+	 
+-- Prozess 2: Automat
+    PROCESS (reset,sCurrentState,barcode_clock, barcode_data, nextdata)
+    BEGIN
+        IF (reset='0') THEN 								-- Reset
+            sCurrentStateN <= z_Standby;
+
+	
+        ELSE 													-- Automat
+            CASE sCurrentState IS
+                WHEN z_Standby           => 								  
+            END CASE;					 
+
+        END IF; 
+	  END PROCESS;
+
+	
+end architecture;

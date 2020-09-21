@@ -137,7 +137,7 @@ byte getOrt(byte lowestOrt){                      //Rekusive Funktion zur Auswah
 
 byte getDirection(byte currentDir){
 
-    lcd.setCursor(0,2);
+    lcd.setCursor(0,3);
     lcd.println("-> "+directions[currentDir]);
 
     while(knopflinks == 0 && knopfrechts== 0){
