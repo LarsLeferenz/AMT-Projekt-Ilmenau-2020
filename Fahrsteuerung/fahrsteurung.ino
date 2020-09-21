@@ -1,7 +1,7 @@
 //*********************************************************
 //AMT Zielfuhrendes-fahren
 //Autoren: Lars Leferenz, Tobias Scholz, Sebastian Adler
-//Stand: 07.05.2020 12:51
+//Stand: 21.09.2020 14:05
 //*********************************************************
 
 #include <Wire.h>
@@ -27,13 +27,21 @@ int knopfrechts;
 int knopflinks;
 
 int start;
+char startChar;
 int ziel;
-String orte[] = {"test","test2","test3"};
-int ortelength = 3;
-int weg[] = {2,0,2,0,2,1,2,0,1,2,0,0};      //Streckenplan, 0 = Geradeaus ; 1 = Links ; 2 = Rechts
-int size = 12;                              //Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
+char zielChar;
+String orte[] = {"Kreuzung-A","Kreuzung-B","Kreuzung-C","Kreuzung-D","Kreuzung-E","Kreuzung-F","Kreuzung-G","Kreuzung-H",
+                "Kreuzung-I","Kreuzung-J","Kreuzung-K","Kreuzung-L","Kreuzung-M","Kreuzung-N","Kreuzung-O","Kreuzung-P",
+                "Kreuzung-Q","Kreuzung-R","Kreuzung-S"};
+char orteChar[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s'};
+int ortelength = 19;
+int weg[10];      //Streckenplan, 0 = Geradeaus ; 1 = Links ; 2 = Rechts
+int size = 10;                              //Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
 int index = 0;
 
+byte cross = 18;
+              //Die Map: Jede Kreuzung eine Spalte; nullte Zeile Name der Kreuzung; erste bis vierte Zeile Name der Nachbar Kreuzung, Reihenfolge oben, rechts, unten, links; fünfte Zeile Distanz zum Ziel
+char maps[19][7] = {"a!bc!9","b!gca9","cb!ga9","def!!9","echfd9","fei!d","g!khb9","hgkie9","ih!jf9","jno!i","k!mhg","lp!m!9","mlqnk9","n!moj9","onr!j9","p!!ql9","qpsrm9","rqs!o","sq!r!9"};
 
 
 void setup() {
@@ -50,6 +58,11 @@ void setup() {
     Serial.begin(9600);
 
     getDestUI();
+    startChar = orteChar[start];
+    zielChar = orteChar[ziel];
+
+    fill();
+    rout();
 }
 
 void getDestUI(){                       //"UI" zum eingeben des Start/Ziel
@@ -112,6 +125,57 @@ int getOrt(int lowestOrt){                      //Rekusive Funktion zur Auswahl 
     }else{
         return lowestOrt;
     }
+}
+void fill() {
+  byte filled = 0;
+  maps[zielChar - 32][5] = 0;                  //setzen des Zielfeldes   TODO char-int-Umrechnung!!
+  for( byte i = 0; filled < cross; i++) {   //einzutragende Distanz erhöhen, bis alle Distanzen eingetragen
+    for( byte j = 0; j < cross; j++){        //Suche welche Kreuzungen maximale eingetragenne Distanz haben
+      if (maps[j][5] == i) {
+        for( byte k = 1; k < 5; k++){       //einzelnen Nachbarn überprüfen
+          if(maps[j][k] != '!'){             //ob sie existieren
+            if(maps[maps[j][k]-32][5] == 9){   //und noch keine Distssnz eingetragen haben
+              maps[maps[j][k]-32][5] = i + 1; //Distanz eintragen
+              filled++;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+void rout() {
+  byte pointer = startChar - 32;    //setze Anfagspunkt
+  index = 0;
+  while(maps[pointer][5] > 0){       //solange Ziel nicht erreicht
+    byte min = maps[pointer][1]-32;    
+    byte aim = 1;
+    for(byte i = 2; i < 5; i++){
+      if (maps[min][5] > maps[maps[pointer][i] -32][5]){
+        min = maps[pointer][i];          //suche NAchpar mit niedrigster Entfernung zum Ziel 
+        aim = i;
+      }
+    }
+    if (((direction - aim) == 2) || ((direction - aim) == -2)){   //Ermittle Fahrbefehl aus Ankommmrichtung und Weiterfahrrichtung
+      weg[index] = 0;
+    }
+    if (((direction - aim) == 1) || ((direction - aim) == -3)){
+      weg[index] = 1;
+    }
+    if (((direction - aim) == 3) || ((direction - aim) == -1)){
+      weg[index] = 2;
+    }
+    index++;                            //Vorbereitung nächster Durchlauf
+    for(byte i = 1; i < 5; i++){          //pointer auf nächste Kreuzung
+      if (maps[min][i] == pointer) {
+        pointer = min;
+        direction = i;
+      }
+    }
+  }
+  size = index + 1;   //size gibt jetzt Anzahl Anweisungen an
+  index = 0;
 }
 
 void sensoren(){                    //Updated Senson VAriablen
