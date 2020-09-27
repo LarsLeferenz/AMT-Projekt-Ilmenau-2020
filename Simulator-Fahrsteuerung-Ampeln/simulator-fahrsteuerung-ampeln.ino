@@ -11,10 +11,10 @@ byte rechtsvor = 7;
 byte linksrück= 8;
 byte rechtsrück = 6;
                                                
-byte ML = 3;
-byte MR = 2;
-byte AL = 4;
-byte AR = 5;
+byte LL = 3;
+byte LR = 2;
+byte KL = 4;
+byte KR = 5;
 
 //Farbsensor
 byte s0;
@@ -28,10 +28,10 @@ int gruen;
 int blau;
 //
 
-int MLWert ;
-int MRWert ;
-int ALWert ;
-int ARWert ;
+int LLWert ;
+int LRWert ;
+int KLWert ;
+int KRWert ;
 
 int weg[] = {2,0,2,0,2,1,2,0,1,2,0,0};      //Streckenplan, 0 = Geradeaus ; 1 = Links ; 2 = Rechts
 int size = 12;                              //Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
@@ -54,19 +54,19 @@ void setup() {
     digitalWrite(s0,HIGH);
     digitalWrite(s1,LOW);
 
-    pinMode(ML,INPUT);
-    pinMode(MR,INPUT);
-    pinMode(AL,INPUT);
-    pinMode(AR,INPUT);
+    pinMode(LL,INPUT);
+    pinMode(LR,INPUT);
+    pinMode(KL,INPUT);
+    pinMode(KR,INPUT);
 
     Serial.begin(9600);
 }
 
 void sensoren(){                    //Updated Senson VAriablen
-    MLWert = digitalRead(ML);
-    MRWert = digitalRead(MR);
-    ALWert = digitalRead(AL);
-    ARWert = digitalRead(AR);
+    LLWert = digitalRead(LL);
+    LRWert = digitalRead(LR);
+    KLWert = digitalRead(KL);
+    KRWert = digitalRead(KR);
 
     digitalWrite(s2,LOW);           //Rote Farbe messen
     digitalWrite(s3,LOW);
@@ -85,7 +85,7 @@ void scharfrechts(){                //Bei Abkommen von Strecke links
     digitalWrite(rechtsvor,LOW);
     digitalWrite(linksrück,LOW);
     digitalWrite(rechtsrück,HIGH);
-    while(MLWert == 0 && MRWert == 0){
+    while(LLWert == 0 && LRWert == 0){
         sensoren();
     }
     reset();
@@ -95,7 +95,7 @@ void scharflinks(){                 //Bei Abkommen von Strecke rechts
     digitalWrite(rechtsvor,HIGH);
     digitalWrite(linksrück,HIGH);
     digitalWrite(rechtsrück,LOW);
-    while(MLWert == 0 && MRWert == 0){
+    while(LLWert == 0 && LRWert == 0){
         sensoren();
     }
     reset();
@@ -104,16 +104,16 @@ void scharflinks(){                 //Bei Abkommen von Strecke rechts
 void kreuzungKorrektur(){                           //Richtet AMT vor Kreuzung gerade aus
     Serial.println("Korrigiere Ausrichtung...");
     reset();
-    switch(ARWert) {
+    switch(KRWert) {
         case 0:
-            while (ARWert == 0 ){           
+            while (KRWert == 0 ){           
                 digitalWrite(linksvor,LOW);                                            
                 sensoren(); 
             }
             
             break;
         case 1: 
-            while (ALWert == 0 ){
+            while (KLWert == 0 ){
                 digitalWrite(rechtsvor,LOW);
                 sensoren();
             }
@@ -133,7 +133,7 @@ void loop() {
     scharfrechts(); 
     scharflinks();
 
-    while (MLWert == 0 && MRWert == 1)            //RECHTS Korrektur/Kurve fahren
+    while (LLWert == 0 && LRWert == 1)            //RECHTS Korrektur/Kurve fahren
     {
         digitalWrite(rechtsvor,LOW);
         digitalWrite(rechtsrück,HIGH);
@@ -143,7 +143,7 @@ void loop() {
 
     reset();
     
-    while (MLWert == 1 && MRWert == 0)            //LINKS Korrektur/Kurve fahren
+    while (LLWert == 1 && LRWert == 0)            //LINKS Korrektur/Kurve fahren
     {                           
         digitalWrite(linksvor,LOW);
         digitalWrite(linksrück,HIGH);
@@ -162,39 +162,39 @@ void loop() {
 
     reset();              
     
-    if ((ALWert == 1 || ARWert == 1) && MLWert == 1 && MRWert == 1){  //KREUZUNG
+    if ((KLWert == 1 || KRWert == 1) && LLWert == 1 && LRWert == 1){  //KREUZUNG
 
         delay(100);
         sensoren();
 
-        if (((ALWert == 1 || ARWert == 1) && MLWert == 1 && MRWert == 1)){  
+        if (((KLWert == 1 || KRWert == 1) && LLWert == 1 && LRWert == 1)){  
             switch (weg[index])
             {
             case 0:                             //Geradeaus
                 kreuzungKorrektur();
-                while (ALWert == 1 || ARWert == 1) {
+                while (KLWert == 1 || KRWert == 1) {
                     reset();
                     sensoren();
                 }
                 break;
             case 1:                           //LINKS an ner  KReuzung
                 kreuzungKorrektur();                      
-                while((MRWert == 1 && MLWert == 1)){  
+                while((LRWert == 1 && LLWert == 1)){  
                     sensoren();
                     digitalWrite(linksvor,LOW);       
                 }
-                while (!(MRWert == 1 && MLWert == 1)){
+                while (!(LRWert == 1 && LLWert == 1)){
                     sensoren();
                     delay(100);
                 }
                 break;
             case 2 :                              //RECCHTS an ner Kreuzung
                 kreuzungKorrektur();
-                while ((MRWert == 1 && MLWert == 1)){
+                while ((LRWert == 1 && LLWert == 1)){
                     sensoren();
                     digitalWrite(rechtsvor,LOW);
                 }
-                while(!(MRWert == 1 && MLWert == 1)){
+                while(!(LRWert == 1 && LLWert == 1)){
                     sensoren();
                     delay(100);
                 }
@@ -219,10 +219,10 @@ void loop() {
     reset();
     
     
-    if(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0)   {         //Beim Abkommen an einer geraden
+    if(KRWert == 0 && KLWert == 0 &&LRWert == 0 && LLWert == 0)   {         //Beim Abkommen an einer geraden
         delay(500);
         Serial.println("Von Streck abgekommen, setze zurück...");
-        while(ARWert == 0 && ALWert == 0 &&MRWert == 0 && MLWert == 0){                                                             
+        while(KRWert == 0 && KLWert == 0 &&LRWert == 0 && LLWert == 0){                                                             
             digitalWrite(linksvor,LOW);
             digitalWrite(rechtsvor,LOW);
             digitalWrite(linksrück,HIGH);
