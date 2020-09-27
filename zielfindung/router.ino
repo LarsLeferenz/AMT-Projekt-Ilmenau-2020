@@ -2,14 +2,14 @@ byte start = 255;
 char startChar;
 byte ziel = 255;
 char zielChar;
-byte direction = 255;
+byte direction      = 255;
 String directions[] = {"Von oben", "Von rechts", "Von unten", "Von links"};
-char orteChar[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-              'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's'};
-byte ortelength = 19;
+char orteChar[]     = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                   'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's'};
+byte ortelength     = 19;
 byte weg[10];  // Streckenplan, 0 = Geradeaus ; 1 = Links ; 2 = Rechts
 byte size =
-10;  // Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
+    10;  // Größe des Arrays, size() hat irgendwie nicht richtig funktioniert
 byte index = 0;
 
 // 1 nach oben, 2 nach rechts, ....
@@ -19,74 +19,79 @@ byte cross = 18;
 // vierte Zeile Name der Nachbar Kreuzung, Reihenfolge oben, rechts, unten,
 // links; fünfte Zeile Distanz zum Ziel
 char maps[19][7] = {"a!bc!9", "b!gca9", "cb!ga9", "def!!9", "echfd9",
-              "fei!d9", "g!khb9", "hgkie9", "ih!jf9", "jno!i9",
-              "k!mhg9", "lp!m!9", "mlqnk9", "n!moj9", "onr!j9",
-              "p!!ql9", "qpsrm9", "rqs!o9", "sq!r!9"};
+                    "fei!d9", "g!khb9", "hgkie9", "ih!jf9", "jno!i9",
+                    "k!mhg9", "lp!m!9", "mlqnk9", "n!moj9", "onr!j9",
+                    "p!!ql9", "qpsrm9", "rqs!o9", "sq!r!9"};
 
 void setup() {
-Serial.begin(9600);
-start = 'h' - 97;
-ziel = 'p' - 97;
-direction = 2;
-startChar = orteChar[start];
-zielChar = orteChar[ziel];
-Serial.println((char)toupper(orteChar[start]));
-Serial.println(directions[direction - 1]);
-Serial.println((char)toupper(orteChar[ziel]));
-maps[ziel][5] = 0;
-fill2(ziel);
-rout();
+    Serial.begin(9600);
+    start     = 'h' - 97;
+    ziel      = 'p' - 97;
+    direction = 2;
+    startChar = orteChar[start];
+    zielChar  = orteChar[ziel];
+    Serial.println((char)toupper(orteChar[start]));
+    Serial.println(directions[direction - 1]);
+    Serial.println((char)toupper(orteChar[ziel]));
+    maps[ziel][5] = 0;
+    fill2(ziel);
+    rout();
 
-for (byte i = 0; i < 10; i++) {
-  Serial.println((int)weg[i]);
-}
+    for (byte i = 0; i < 10; i++) {
+        Serial.println((int)weg[i]);
+    }
 }
 
 void fill2(byte node) {
-for (byte i = 1; i < 5; i++) {
-  if (maps[node][i] != '!' &
-      maps[maps[node][i] - 97][5] > maps[node][5] + 1) {
-      maps[maps[node][i] - 97][5] = maps[node][5] + 1;
-      fill2(maps[node][i] - 97);
-  }
-}
+    for (byte i = 1; i < 5; i++) {
+        if (maps[node][i] != '!' &
+            maps[maps[node][i] - 97][5] > maps[node][5] + 1) {
+            maps[maps[node][i] - 97][5] = maps[node][5] + 1;
+            fill2(maps[node][i] - 97);
+        }
+    }
 }
 
 void rout() {
-byte pointer = startChar - 97;  // setze Anfangspunkt
-index = 0;
-while (maps[pointer][5] > 0) {  // solange Ziel nicht erreicht
-  byte min = maps[pointer][1] - 97;
-  byte aim = 1;
-  for (byte i = 1; i < 5; i++) {
-      if (maps[pointer][i] != '!') {
-          if (maps[min][5] > maps[maps[pointer][i] - 97][5] && (direction != i)) {
-              min = maps[pointer][i] - 97;  // suche Nachbar mit niedrigster Entfernung zum Ziel
-              aim = i;
-          }
-      }
-  }
-  Serial.println((char)(min + 97));
-  if (((direction - aim) == 2) || ((direction - aim) == -2)) {  // Ermittle Fahrbefehl aus Ankommmrichtung und Weiterfahrrichtung
-      weg[index] = 0;
-  }
-  if (((direction - aim) == -1) || ((direction - aim) == 3)) {
-      weg[index] = 1;
-  }
-  if (((direction - aim) == -3) || ((direction - aim) == 1)) {
-      weg[index] = 2;
-  }
+    byte pointer = startChar - 97;  // setze Anfangspunkt
+    index        = 0;
+    while (maps[pointer][5] > 0) {  // solange Ziel nicht erreicht
+        if (direction != 1) {
+            byte min = maps[pointer][1] - 97;
+            byte aim = 1;
+        } else {
+            byte min = maps[pointer][2] - 97;
+            byte aim = 2;
+        }
+        for (byte i = 1; i < 5; i++) {
+            if (maps[pointer][i] != '!') {
+                if (maps[min][5] > maps[maps[pointer][i] - 97][5] && (direction != i)) {
+                    min = maps[pointer][i] - 97;  // suche Nachbar mit niedrigster Entfernung zum Ziel
+                    aim = i;
+                }
+            }
+        }
+        Serial.println((char)(min + 97));
+        if (((direction - aim) == 2) || ((direction - aim) == -2)) {  // Ermittle Fahrbefehl aus Ankommmrichtung und Weiterfahrrichtung
+            weg[index] = 0;
+        }
+        if (((direction - aim) == -1) || ((direction - aim) == 3)) {
+            weg[index] = 1;
+        }
+        if (((direction - aim) == -3) || ((direction - aim) == 1)) {
+            weg[index] = 2;
+        }
 
-  index++;                        // Vorbereitung nächster Durchlauf
-  for (byte i = 1; i < 5; i++) {  // pointer auf nächste Kreuzung
-      if (maps[min][i] - 97 == pointer) {
-          pointer = min;
-          direction = i;
-      }
-  }
-}
-size = index + 1;  // size gibt jetzt Anzahl Anweisungen an
-index = 0;
+        index++;                        // Vorbereitung nächster Durchlauf
+        for (byte i = 1; i < 5; i++) {  // pointer auf nächste Kreuzung
+            if (maps[min][i] - 97 == pointer) {
+                pointer   = min;
+                direction = i;
+            }
+        }
+    }
+    size  = index + 1;  // size gibt jetzt Anzahl Anweisungen an
+    index = 0;
 }
 
 void loop() {}

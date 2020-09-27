@@ -255,8 +255,13 @@ void rout() {   //Nicht Rekursiv da langsam der RAM ausgeht
     byte pointer = startChar - 97;  // setze Anfangspunkt
     index        = 0;               //aktueller Positon in weg[] Array
     while (maps[pointer][5] > 0) {  // solange Ziel nicht erreicht
-        byte min = maps[pointer][1] - 97;   //"beste" Wahl wilkürlich auf 1 setzen
-        byte aim = 1;                       //index dieser Wahl
+        if (direction != 1) {                   //Wahl willkürlich auf 1, wenn diese nicht die Direction ist
+            byte min = maps[pointer][1] - 97;
+            byte aim = 1;
+        } else {
+            byte min = maps[pointer][2] - 97;
+            byte aim = 2;
+        }
         for (byte i = 1; i < 5; i++) {      //jeden Nachbarn checken
             if (maps[pointer][i] != '!') {  //exisitert dieser Nachbar?
                 if (maps[min][5] > maps[maps[pointer][i] - 97][5] && (direction != i)) {    //Hat dieser Nachbar eine kürzere Entfernung zum Ziel als aktuelle beste Wahl
@@ -275,7 +280,6 @@ void rout() {   //Nicht Rekursiv da langsam der RAM ausgeht
         if (((direction - aim) == -3) || ((direction - aim) == 1)) {
             weg[index] = 2;
         }
-
         index++;                        // Vorbereitung nächster Durchlauf
         for (byte i = 1; i < 5; i++) {  // pointer auf nächste Kreuzung
             if (maps[min][i] - 97 == pointer) {
