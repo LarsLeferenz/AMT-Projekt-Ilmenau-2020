@@ -39,7 +39,7 @@ byte KRWert;
 bool knopfrechts = 1;  //Wert der Knöpfe, 1 = Aus
 bool knopflinks  = 1;
 
-bool blinkerEnable = true;  //Nutze Blinkerfunktion
+//bool blinkerEnable = true;  //Nutze Blinkerfunktion
 
 //****Zielfindung
 char startChar;
@@ -73,6 +73,11 @@ void setup() {
     pinMode(linksruck, OUTPUT);
     pinMode(rechtsruck, OUTPUT);
 
+    digitalWrite(linksvor, LOW);
+    digitalWrite(rechtsvor, LOW);
+    digitalWrite(linksruck, LOW);
+    digitalWrite(rechtsruck, LOW);
+
     pinMode(LL, INPUT);
     pinMode(LR, INPUT);
     pinMode(KL, INPUT);
@@ -85,11 +90,11 @@ void setup() {
 
     Serial.begin(9600);
 
-    //  while(true){
-    //          //updateButtons();
-    //          //Serial.print(mcp.digitalRead(BT0));
-    //          Serial.print(mcp.digitalRead(BT1));
-    //    }
+    // while(true){
+    //           //updateButtons();
+    //           //Serial.print(mcp.digitalRead(BT0));
+    //           Serial.println(mcp.digitalRead(BT1));
+    //     }
 
     getDestUI();                      //Starten des UI
     startChar     = orteChar[start];  //Starten der Zielfindung
@@ -119,12 +124,12 @@ void getDestUI() {  //"UI" zum eingeben des Start/Ziel
     lcd.setCursor(0, 0);
     lcd.print(F("-----Willkommen-----"));
     lcd.setCursor(0, 1);
-    lcd.print(F("Wandere mit Links <"));
+    lcd.print(F("Druecke zum wandern"));
     lcd.setCursor(0, 2);
-    lcd.print(F("Waehle mit Rechts >"));
+    lcd.print(F("Halte zum waehlen"));
     lcd.setCursor(0, 3);
-    lcd.print(F("Bestaetige..."));
-    while (knopfrechts == 1) {
+    lcd.print(F("Weiter?"));
+    while (knopfrechts == 1 && knopflinks == 1) {
         updateButtons();
         // Serial.println(knopfrechts);
         // Serial.println(knopflinks);
@@ -169,19 +174,47 @@ void getDestUI() {  //"UI" zum eingeben des Start/Ziel
     }
 }
 
-void updateButtons() {
-    knopfrechts = updateButtonsDebounce(BT0, 255);
-    knopflinks  = updateButtonsDebounce(BT1, 255);
+
+void updateButtons() {  
+
+    if (mcp.digitalRead(BT0) == 1) {
+        knopflinks = 1;
+        knopfrechts = 1;
+    }else{
+        buttonSelect();
+    }
+    Serial.println(knopflinks);
+    Serial.println(knopfrechts);
+
 }
-bool updateButtonsDebounce(uint8_t BT, byte debounce) {  //Button Debouncer #debounce = wie viele Messzyklen LOW sein muss
-    bool high = false;
-    for (byte i = 0; i < debounce; i++) {
-        if (mcp.digitalRead(BT) == 1) {
-            high = true;
-            break;
+
+void buttonSelect(){
+    for (int i = 0; i < 3000; i++) {
+        delay(1);
+        if(i>500){
+            lcd.setCursor(0,3);
+            lcd.print("Ready.........   ");
+        }
+        if (mcp.digitalRead(BT0) == 1) {
+            if(i>500){
+                knopfrechts = 0;
+                knopflinks = 1;
+                break;
+            }else{
+                knopfrechts = 1;
+                knopflinks = 0;
+                break;
+            }
+        }
+        if(i==2999){
+            knopfrechts = 0;
+            knopflinks = 1;
         }
     }
-    return high;
+    lcd.setCursor(0,3);
+    lcd.print("");
+
+
 }
 byte getOrt(byte lowestOrt, bool start) {  // Rekusive Funktion zur Auswahl des Ortes
     updateButtons();
@@ -224,7 +257,7 @@ byte getDirection(byte currentDir) {                //wie getOrt() nur mit der R
     lcd.print(F("Aus welcher "));
     lcd.setCursor(0, 1);
     lcd.print(F("Richtung kommst du?"));
-    lcd.setCursor(0, 3);
+    lcd.setCursor(0, 2);
     lcd.print("-> " + directions[currentDir]);
 
     while (knopflinks == 1 && knopfrechts == 1) {
@@ -255,6 +288,8 @@ void rout() {   //Nicht Rekursiv da langsam der RAM ausgeht
     byte pointer = startChar - 97;  // setze Anfangspunkt
     index        = 0;               //aktueller Positon in weg[] Array
     while (maps[pointer][5] > 0) {  // solange Ziel nicht erreicht
+        byte min;
+        byte aim;
         if (direction != 1) {                   //Wahl willkürlich auf 1, wenn diese nicht die Direction ist
             byte min = maps[pointer][1] - 97;
             byte aim = 1;
@@ -353,25 +388,25 @@ void kreuzungKorrektur() {  // Richtet AMT vor Kreuzung gerade aus
     Serial.println("Korrektur Erfolgreich!");
 }
 
-void blinker() {
-    if (weg[index] != 0 && blinkerEnable) {
-        if (weg[index] == 1) {
-            // digitalWrite(PINNNNNN,HIGH);
-        } else {
-            // digitalWrite(PINNNNNN,HIGH);
-        }
-    } else {
-        // digitalWrite(PINNNNNN,LOW);
-        // digitalWrite(PINNNNNN,LOW);
-    }
-}
+// void blinker() {
+//     if (weg[index] != 0 && blinkerEnable) {
+//         if (weg[index] == 1) {
+//             // digitalWrite(PINNNNNN,HIGH);
+//         } else {
+//             // digitalWrite(PINNNNNN,HIGH);
+//         }
+//     } else {
+//         // digitalWrite(PINNNNNN,LOW);
+//         // digitalWrite(PINNNNNN,LOW);
+//     }
+// }
 
 void loop() {
     reset();
     scharfrechts();
     scharflinks();
 
-    blinker();
+    //blinker();
 
     while (LLWert == 0 && LRWert == 1)  // RECHTS Korrektur/Kurve fahren
     {

@@ -7,15 +7,15 @@
 
 
 
-int linksvor = 9;                           //AMT Konfiguration
+int linksvor = 5;                           //AMT Konfiguration
 int rechtsvor = 7;
-int linksruck= 8;
-int rechtsruck = 6;
+int linksruck= 9;
+int rechtsruck = 11;
                                                
-int LL = 3;
-int LR = 2;
-int KL = 4;
-int KR = 5;
+#define LL A1  //Sensoren
+#define LR A2
+#define KL A0
+#define KR A3
 
 int LLWert ;
 int LRWert ;
